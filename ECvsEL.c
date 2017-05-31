@@ -186,60 +186,69 @@ int main(int argc, char const *argv[]) {
 }
 
 void setnwL(){
-  char * str = malloc(sizeof(int));
-  char * timeL = malloc(sizeof(double));
+  if (!errorL){
+    char * str = malloc(sizeof(int));
+    char * timeL = malloc(sizeof(double));
+    char * spaceL = malloc(sizeof(long));
 
-  sprintf(str, "%d", maxScoringL);
-  sprintf(timeL,"%f",segundosL);
-  gtk_entry_set_text(GTK_ENTRY(entryScoringL),str);
-  gtk_entry_set_text(GTK_ENTRY(entryTimeL),timeL);
-  int size = newSizeL;
-  printf("%d\n",size);
-  tableGeo = calloc(2,sizeof(GtkWidget**));
-  g_table = gtk_grid_new ();
-  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_finalTable), g_table);
+    sprintf(str, "%d", maxScoringL);
+    sprintf(timeL,"%f",segundosL);
+    sprintf(spaceL,"%ld",lSpace);
+
+    gtk_entry_set_text(GTK_ENTRY(entryScoringL),str);
+    gtk_entry_set_text(GTK_ENTRY(entryTimeL),timeL);
+    gtk_entry_set_text(GTK_ENTRY(entrySpaceL),spaceL);
+    int size = newSizeL;
+    printf("%d\n",size);
+    tableGeo = calloc(2,sizeof(GtkWidget**));
+    g_table = gtk_grid_new ();
+    gtk_container_add (GTK_CONTAINER (g_scrolledwindow_finalTable), g_table);
 
 
-    for(int j = 0; j < 2; j++) {
-      tableGeo[j] = calloc(size,sizeof(GtkWidget*));
+      for(int j = 0; j < 2; j++) {
+        tableGeo[j] = calloc(size,sizeof(GtkWidget*));
+
+      }
+
+      for(int row =0; row < 2; row++)
+      {
+        for(int column=0; column < size; column++)
+      {
+        tableGeo[row][column] = gtk_entry_new();
+      gtk_entry_set_width_chars(GTK_ENTRY(tableGeo[row][column]),2);
+      gtk_widget_set_sensitive(tableGeo[row][column],FALSE);
+      gtk_grid_attach (GTK_GRID (g_table),tableGeo[row][column] , column, row, 1, 1);
+      char letter[1];
+      if (row ==0){
+
+          strncpy(letter,&vL[column],1);
+
+      }
+      else{
+        strncpy(letter,&wL[column],1);
+
+      }
+
+      gtk_entry_set_text (GTK_ENTRY(tableGeo[row][column]),letter);
 
     }
-
-    for(int row =0; row < 2; row++)
-    {
-      for(int column=0; column < size; column++)
-    {
-      tableGeo[row][column] = gtk_entry_new();
-    gtk_entry_set_width_chars(GTK_ENTRY(tableGeo[row][column]),2);
-    gtk_widget_set_sensitive(tableGeo[row][column],FALSE);
-    gtk_grid_attach (GTK_GRID (g_table),tableGeo[row][column] , column, row, 1, 1);
-    char letter[1];
-    if (row ==0){
-
-        strncpy(letter,&vL[column],1);
-
     }
-    else{
-      strncpy(letter,&wL[column],1);
-
-    }
-
-    gtk_entry_set_text (GTK_ENTRY(tableGeo[row][column]),letter);
-
   }
-  }
+
 }
 
 void setnwC(){
-
+if (!errorC){
   char * str = malloc(sizeof(int));
   char * timeC = malloc(sizeof(double));
-
+  char * spaceC = malloc(sizeof(long));
   sprintf(str, "%d", maxScoringC);
   sprintf(timeC,"%f",segundosC);
+  sprintf(spaceC,"%ld",cSpace);
 
   gtk_entry_set_text(GTK_ENTRY(entryScoringC),str);
   gtk_entry_set_text(GTK_ENTRY(entryTimeC),timeC);
+  gtk_entry_set_text(GTK_ENTRY(entrySpaceC),spaceC);
 
   int size = newSize;
 
@@ -274,6 +283,8 @@ void setnwC(){
 
   }
   }
+}
+
 }
 void startAlgorithm(){
   gap = gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON(spinnerGap));
