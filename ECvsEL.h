@@ -19,6 +19,9 @@ bool errorL = false;
 int maxScoringL = 0;
 int maxScoringC = 0;
 
+long lSpace = 0;
+long cSpace = 0;
+
 int vSize;
 int wSize;
 int newSize;
@@ -237,6 +240,7 @@ int checkChars(int i, int j) {
 			}
 			lCurrent = lCurrent->next;
 		//================================================
+	 
 		free(lCurrent);
 		return lHead;
 	}
@@ -393,7 +397,8 @@ int checkChars(int i, int j) {
 						vL[counter] = vLt[counter];
 						wL[counter] = wLt[counter];
 					}
-
+					lSpace = (sizeof(struct lNode) * 3) + (sizeof(int) * (vSize)) + (2 * sizeof(char) * (vSize + wSize)) + (2 * sizeof(char) * newSizeL);
+					printf("Space L: %li\n", lSpace);
 					free(vLt);
 					free(wLt);
 					free(joints);
@@ -619,6 +624,8 @@ int checkChars(int i, int j) {
 							free(vCt);
 							free(wCt);
 
+							cSpace = (2 * sizeof(char) * (newSize)) + (2 * sizeof(char) * (vSize + wSize)) + (sizeof(struct cNode) * (vSize + 1) * (wSize +1));
+							printf("Space C: %li\n", cSpace);
 							printCAlign();
 							printf("Score: %i\n", maxScoringC);
 						}
