@@ -30,6 +30,10 @@ GtkWidget *g_tableGeo;
 GtkWidget ***tableGeoData;
 GtkWidget *g_scrolledwindow_finalTableGeno;
 
+GtkWidget *g_table;
+GtkWidget ***tableGeo;
+GtkWidget *g_scrolledwindow_finalTable;
+
 
 double segundosL;
 double segundosC;
@@ -149,6 +153,8 @@ int main(int argc, char const *argv[]) {
     entrySpaceC =GTK_WIDGET(gtk_builder_get_object(builder, "entrySpaceC"));
 
     g_scrolledwindow_finalTableGeno= GTK_WIDGET(gtk_builder_get_object(builder,"scrolledwindow_finalTableGeno"));
+    g_scrolledwindow_finalTable= GTK_WIDGET(gtk_builder_get_object(builder,"scrolledwindow_finalTable"));
+
 
 
 
@@ -159,13 +165,62 @@ int main(int argc, char const *argv[]) {
   }
 }
 
+void setnwL(){
+  char * str = malloc(sizeof(int));
+  char * timeL = malloc(sizeof(double));
+
+  sprintf(str, "%d", maxScoringL);
+  sprintf(timeL,"%f",segundosL);
+  gtk_entry_set_text(GTK_ENTRY(entryScoringL),str);
+  gtk_entry_set_text(GTK_ENTRY(entryTimeL),timeL);
+  int size = newSizeL;
+  printf("%d\n",size);
+  tableGeo = calloc(2,sizeof(GtkWidget**));
+  g_table = gtk_grid_new ();
+  gtk_container_add (GTK_CONTAINER (g_scrolledwindow_finalTable), g_table);
+
+
+    for(int j = 0; j < 2; j++) {
+      tableGeo[j] = calloc(size,sizeof(GtkWidget*));
+
+    }
+
+    for(int row =0; row < 2; row++)
+    {
+      for(int column=0; column < size; column++)
+    {
+      tableGeo[row][column] = gtk_entry_new();
+    gtk_entry_set_width_chars(GTK_ENTRY(tableGeo[row][column]),2);
+    gtk_widget_set_sensitive(tableGeo[row][column],FALSE);
+    gtk_grid_attach (GTK_GRID (g_table),tableGeo[row][column] , column, row, 1, 1);
+    char letter[1];
+    if (row ==0){
+
+        strncpy(letter,&vL[column],1);
+
+    }
+    else{
+      strncpy(letter,&wL[column],1);
+
+    }
+
+    gtk_entry_set_text (GTK_ENTRY(tableGeo[row][column]),letter);
+
+  }
+  }
+}
+
 void setnwC(){
+
   char * str = malloc(sizeof(int));
   char * timeC = malloc(sizeof(double));
+
   sprintf(str, "%d", maxScoringC);
   sprintf(timeC,"%f",segundosC);
+
   gtk_entry_set_text(GTK_ENTRY(entryScoringC),str);
   gtk_entry_set_text(GTK_ENTRY(entryTimeC),timeC);
+
   int size = strlen(vC);
 
 
@@ -210,19 +265,25 @@ void startAlgorithm(){
 
 
     clock_t tiempo_inicio, tiempo_final;
+    tiempo_inicio = clock();
+    nwL();
+    tiempo_final = clock();
+    segundosL = (double)(tiempo_final-tiempo_inicio) / CLOCKS_PER_SEC; /*según que estes midiendo el tiempo en segundos es demasiado grande*/
 
 
     tiempo_inicio = clock();
     nwC();
-
-
     tiempo_final = clock();
 
     segundosC = (double)(tiempo_final-tiempo_inicio) / CLOCKS_PER_SEC; /*según que estes midiendo el tiempo en segundos es demasiado grande*/
-
-
+      printf("OUT\n");
+      //AQUÍ SE CAE
+      printLAlign();
+    //setnwL();
 
     setnwC();
+
+
      gtk_widget_show_all(windowResult);
       //gtk_widget_destroy(windowInitial);
     gtk_widget_hide(windowInitial);
