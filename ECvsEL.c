@@ -15,6 +15,9 @@ GtkWidget * entryV;
 GtkWidget * spinnerMatch;
 GtkWidget * spinnerMismatch;
 GtkWidget * spinnerGap;
+GtkWidget * dialog;
+GtkWidget * errorMessage;
+
 
 GtkWidget * entrySpaceC;
 GtkWidget * entryTimeC;
@@ -83,11 +86,16 @@ void getLength(){
   wSize = atoi(w);
 
   if (wSize <= 0 || vSize <=0){
-    printf("ERROR\n");
+    gtk_label_set_text(GTK_LABEL(errorMessage),"Los valores ingresados no son tamaños válidos");
+    gtk_widget_show(dialog);
   }
   else{
     GenerateHileras();
   }
+}
+
+void aceptButton(){
+    gtk_widget_hide(dialog);
 }
 
 
@@ -155,7 +163,8 @@ int main(int argc, char const *argv[]) {
     g_scrolledwindow_finalTableGeno= GTK_WIDGET(gtk_builder_get_object(builder,"scrolledwindow_finalTableGeno"));
     g_scrolledwindow_finalTable= GTK_WIDGET(gtk_builder_get_object(builder,"scrolledwindow_finalTable"));
 
-
+    dialog = GTK_WIDGET(gtk_builder_get_object(builder,"dialog1"));
+    errorMessage = GTK_WIDGET(gtk_builder_get_object(builder,"lblMessage"));
 
 
     gtk_widget_show(windowInitial);
@@ -221,7 +230,7 @@ void setnwC(){
   gtk_entry_set_text(GTK_ENTRY(entryScoringC),str);
   gtk_entry_set_text(GTK_ENTRY(entryTimeC),timeC);
 
-  int size = strlen(vC);
+  int size = newSize;
 
 
     tableGeoData = calloc(2,sizeof(GtkWidget**));
@@ -264,6 +273,7 @@ void startAlgorithm(){
     printf("Continue\n");
 
 
+
     clock_t tiempo_inicio, tiempo_final;
     tiempo_inicio = clock();
     nwL();
@@ -288,6 +298,10 @@ void startAlgorithm(){
      gtk_widget_show_all(windowResult);
       //gtk_widget_destroy(windowInitial);
     gtk_widget_hide(windowInitial);
+  }
+  else{
+      gtk_label_set_text(GTK_LABEL(errorMessage),"Antes de continuar debe de generar las hileras");
+      gtk_widget_show(dialog);
   }
 
 }
