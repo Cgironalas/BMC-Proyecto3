@@ -52,30 +52,42 @@ bool debug =false;
 
 void GenerateHileras(){
   char * base ={"ATCG"};
+  bool err = false;
 
 
-  v = (char *) malloc(sizeof(char)*vSize);
-  w = (char *) malloc(sizeof(char)*wSize);
-
-
-  int position;
-  for (int i = 0; i < vSize; i++){
-    position = rand() % 4;
-    v[i] = base[position];
+  v = malloc(sizeof(char)*vSize);
+  if(v == NULL){
+  	err = true;
+  }
+  w = malloc(sizeof(char)*wSize);
+  if(w == NULL) {
+  	err = true;
   }
 
-  for (int i = 0; i < wSize; i++){
-      position = rand() % 4;
-      w[i] = base[position];
+  if(err) {
+  	gtk_label_set_text(GTK_LABEL(errorMessage),"Las hileras no se pueden generar");
+  	gtk_widget_show(dialog);
+
+  } else {
+
+	  int position;
+	  for (int i = 0; i < vSize; i++){
+	    position = rand() % 4;
+	    v[i] = base[position];
+	  }
+
+	  for (int i = 0; i < wSize; i++){
+	      position = rand() % 4;
+	      w[i] = base[position];
+	  }
+
+	  if(!debug){
+
+
+	 gtk_entry_set_text(GTK_ENTRY(entryV), v);
+	 gtk_entry_set_text(GTK_ENTRY(entryW), w);
+	  }
   }
-
-  if(!debug){
-
-
- //gtk_entry_set_text(GTK_ENTRY(entryV), v);
- //gtk_entry_set_text(GTK_ENTRY(entryW), w);
-  }
-
 }
 
 void getLength(){
