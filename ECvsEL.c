@@ -18,6 +18,11 @@ GtkWidget * spinnerGap;
 GtkWidget * dialog;
 GtkWidget * errorMessage;
 
+GtkWidget * frameResultc;
+GtkWidget * frameResultL;
+GtkWidget * frameErrorC;
+GtkWidget * frameErrorL;
+
 
 GtkWidget * entrySpaceC;
 GtkWidget * entryTimeC;
@@ -167,6 +172,12 @@ int main(int argc, char const *argv[]) {
     errorMessage = GTK_WIDGET(gtk_builder_get_object(builder,"lblMessage"));
 
 
+    frameResultc = GTK_WIDGET(gtk_builder_get_object(builder,"resultCFrame"));
+    frameResultL = GTK_WIDGET(gtk_builder_get_object(builder,"frameLResult"));
+    frameErrorC = GTK_WIDGET(gtk_builder_get_object(builder,"frameErroC"));
+    frameErrorL = GTK_WIDGET(gtk_builder_get_object(builder,"frameErrorL"));
+
+
     gtk_widget_show(windowInitial);
     gtk_main();
 
@@ -277,25 +288,35 @@ void startAlgorithm(){
     clock_t tiempo_inicio, tiempo_final;
     tiempo_inicio = clock();
     nwL();
-
     tiempo_final = clock();
     segundosL = (double)(tiempo_final-tiempo_inicio) / CLOCKS_PER_SEC; /*según que estes midiendo el tiempo en segundos es demasiado grande*/
-
 
     tiempo_inicio = clock();
     nwC();
     tiempo_final = clock();
 
     segundosC = (double)(tiempo_final-tiempo_inicio) / CLOCKS_PER_SEC; /*según que estes midiendo el tiempo en segundos es demasiado grande*/
-      printf("OUT\n");
-      //AQUÍ SE CAE
-
     setnwL();
-
     setnwC();
+    gtk_widget_show_all(windowResult);
+    if (!errorL){
+
+      gtk_widget_show(frameResultL);
+      gtk_widget_hide(frameErrorL);
+    }
+    else{
+      gtk_widget_show(frameErrorL);
+    }
+
+    if (!errorC){
+      gtk_widget_show(frameResultc);
+      gtk_widget_hide(frameErrorC);
+    }
+    else{
+      gtk_widget_show(frameErrorC);
+    }
 
 
-     gtk_widget_show_all(windowResult);
       //gtk_widget_destroy(windowInitial);
     gtk_widget_hide(windowInitial);
   }
