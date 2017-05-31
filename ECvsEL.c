@@ -267,6 +267,7 @@ void startAlgorithm(){
     clock_t tiempo_inicio, tiempo_final;
     tiempo_inicio = clock();
     nwL();
+
     tiempo_final = clock();
     segundosL = (double)(tiempo_final-tiempo_inicio) / CLOCKS_PER_SEC; /*según que estes midiendo el tiempo en segundos es demasiado grande*/
 
@@ -278,8 +279,8 @@ void startAlgorithm(){
     segundosC = (double)(tiempo_final-tiempo_inicio) / CLOCKS_PER_SEC; /*según que estes midiendo el tiempo en segundos es demasiado grande*/
       printf("OUT\n");
       //AQUÍ SE CAE
-      printLAlign();
-    //setnwL();
+
+    setnwL();
 
     setnwC();
 

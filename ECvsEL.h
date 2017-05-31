@@ -92,11 +92,12 @@ char *vL, *wL, *vC, *wC;
 		printf("\n");
 	}
 	void printLAlign(){
+		printf("HERE");
 		printf("V-L: ");
 		for(int i = 0; i < newSizeL; i++) {
 			printf("%c", vL[i]);
 		}
-		printf("\nW-2: ");
+		printf("\nW-L: ");
 		for(int i = 0; i < newSizeL; i++) {
 			printf("%c", wL[i]);
 		}
@@ -161,7 +162,7 @@ int checkChars(int i, int j) {
 					int val1 = temp + checkChars(i, j);
 					int val2 = lCurrent->value + gap;
 					int val3 = lCurrent->next->value + gap;
-					
+
 					lCurrent = lCurrent->next;
 					temp = lCurrent->value;
 					lCurrent->value = max3(val1, val2, val3);
@@ -201,7 +202,7 @@ int checkChars(int i, int j) {
 		//Get best scoring================================
 			for (int i = v1; i < v2; i++) {
 				lCurrent = lHead;
-				
+
 				int temp = lCurrent->value;
 				lCurrent->value = lCurrent->value + gap;
 
@@ -209,7 +210,7 @@ int checkChars(int i, int j) {
 					int val1 = temp + checkChars(i, j);
 					int val2 = lCurrent->value + gap;
 					int val3 = lCurrent->next->value + gap;
-					
+
 					lCurrent = lCurrent->next;
 					temp = lCurrent->value;
 					lCurrent->value = max3(val1, val2, val3);
@@ -284,7 +285,7 @@ int checkChars(int i, int j) {
 				} else {
 					nwLAux(i + 1, m2, (index / 2) + 1, n2);
 				}
-				//nwLAux(i + 1, m2, (index / 2) + 1, n2);	
+				//nwLAux(i + 1, m2, (index / 2) + 1, n2);
 			}
 		}
 	}
@@ -301,12 +302,8 @@ int checkChars(int i, int j) {
 		}
 
 		nwLAux(0, vSize, 0, wSize);
-		
-		printf("\n\nAlignment Joints: \n");
-		for (int i = 0; i < vSize; i++) {
-			printf("%i * ", joints[i]);
-		}
-		printf("\n");
+
+
 
 		int j = 1;
 		int i = 0;
@@ -358,30 +355,22 @@ int checkChars(int i, int j) {
 			currentIndex++;
 		}
 
-		//printf("newSizeL: %i\n", currentIndex);
+		printf("newSizeL: %i\n", currentIndex);
 
 		newSizeL = currentIndex;
-		char *vL = malloc(sizeof(char) * currentIndex);
-		char *wL = malloc(sizeof(char) * currentIndex);
+		vL = malloc(sizeof(char) * newSizeL);
+		wL = malloc(sizeof(char) * newSizeL);
 
-		for(int counter = 0; counter < currentIndex; counter++) {
+		for(int counter = 0; counter < newSizeL; counter++) {
 			vL[counter] = vLt[counter];
 			wL[counter] = wLt[counter];
 		}
+
 		free(vLt);
 		free(wLt);
 		free(joints);
-		
-		printf("Score: %i\n", maxScoringL);
-		printf("V-L: ");
-		for(int i = 0; i < newSizeL; i++) {
-			printf("%c", vL[i]);
-		}
-		printf("\nW-2: ");
-		for(int i = 0; i < newSizeL; i++) {
-			printf("%c", wL[i]);
-		}
-		printf("\n");
+
+
 	}
 //================================================
 
@@ -404,7 +393,7 @@ int checkChars(int i, int j) {
 		for (int j = 0; j < wSize; j++) {
 			struct cNode *aux = (struct cNode*) malloc(sizeof(struct cNode));
 			setValue(aux, current, currentUp, val, arrows);
-			
+
 			current->next = aux;
 			current = aux;
 			if(currentUp != NULL) {	currentUp = currentUp->next; }
@@ -454,7 +443,7 @@ int checkChars(int i, int j) {
 				int v1 = currentUp->value + checkChars(i, j);
 				int v2 = currentUp->next->value + gap;
 				int v3 = current->value + gap;
-				
+
 				int maxVal = max3(v1, v2, v3);
 
 				//Diagonal arrow
