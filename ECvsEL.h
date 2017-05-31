@@ -23,8 +23,8 @@ int newSizeL;
 
 int *joints;
 
-char * v = "TTGCATCGGC";
-char * w = "ATTGTGATCC";
+char * v;
+char * w;
 
 int gap = -2;
 int match = 1;
@@ -368,6 +368,10 @@ int checkChars(int i, int j) {
 			vL[counter] = vLt[counter];
 			wL[counter] = wLt[counter];
 		}
+		free(vLt);
+		free(wLt);
+		free(joints);
+		
 		printf("Score: %i\n", maxScoringL);
 		printf("V-L: ");
 		for(int i = 0; i < newSizeL; i++) {
@@ -474,8 +478,8 @@ int checkChars(int i, int j) {
 				currentUp = currentUp->next;
 			}
 		}
-		printf("\n\nAligned table\n");
-		printCTable(header);
+		//printf("\n\nAligned table\n");
+		//printCTable(header);
 
 		currentRow = header;
 		while (currentRow->down != NULL) { currentRow = currentRow->down; }
@@ -535,6 +539,29 @@ int checkChars(int i, int j) {
 			currentIndex--;
 			counter++;
 		}
+
+		currentRow = header;
+		while (currentRow->down != NULL) { currentRow = currentRow->down; }
+
+		while (currentRow->up != NULL) {
+			current = currentRow;
+			while (current->next != NULL) { current = current->next; }
+			while (current->prev != NULL) {
+				struct cNode *aux = current;
+				current = current->prev;
+				free(aux);
+			}
+			free(current);
+			currentRow = currentRow->up;
+		}
+		current = currentRow;
+		while (current->next != NULL) { current = current->next; }
+		while (current->prev != NULL) {
+			struct cNode *aux = current;
+			current = current->prev;
+			free(aux);
+		}
+		free(header);
 
 		newSize = counter;
 		vC = malloc(sizeof(char) * (newSize));
