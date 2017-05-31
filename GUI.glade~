@@ -2,46 +2,6 @@
 <!-- Generated with glade 3.18.3 -->
 <interface>
   <requires lib="gtk+" version="3.12"/>
-  <object class="GtkWindow" id="window1">
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkFixed" id="fixed4">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <child>
-          <object class="GtkFrame" id="frame4">
-            <property name="width_request">653</property>
-            <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="label_xalign">0</property>
-            <property name="shadow_type">none</property>
-            <child>
-              <object class="GtkAlignment" id="alignment4">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="left_padding">12</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-            </child>
-            <child type="label">
-              <object class="GtkLabel" id="label9">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">frame4</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="x">14</property>
-            <property name="y">33</property>
-          </packing>
-        </child>
-      </object>
-    </child>
-  </object>
   <object class="GtkWindow" id="window_initial">
     <property name="can_focus">False</property>
     <signal name="destroy" handler="windowInitialDestroy" swapped="no"/>
@@ -170,6 +130,7 @@
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="editable">False</property>
+                                    <property name="max_length">65535</property>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -356,6 +317,297 @@
           <packing>
             <property name="x">195</property>
             <property name="y">480</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window_result">
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkFixed" id="fixed4">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkFrame" id="frame4">
+            <property name="width_request">653</property>
+            <property name="height_request">280</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment4">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkFixed" id="fixed5">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow_finalTableGeno">
+                        <property name="width_request">605</property>
+                        <property name="height_request">72</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">etched-in</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">18</property>
+                        <property name="y">170</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label10">
+                        <property name="width_request">100</property>
+                        <property name="height_request">20</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Scoring</property>
+                      </object>
+                      <packing>
+                        <property name="x">17</property>
+                        <property name="y">25</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label11">
+                        <property name="width_request">100</property>
+                        <property name="height_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Tiempo</property>
+                      </object>
+                      <packing>
+                        <property name="x">18</property>
+                        <property name="y">56</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label12">
+                        <property name="width_request">119</property>
+                        <property name="height_request">24</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Complejidad Espacial</property>
+                      </object>
+                      <packing>
+                        <property name="x">45</property>
+                        <property name="y">93</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label13">
+                        <property name="width_request">100</property>
+                        <property name="height_request">24</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Alineamiento</property>
+                      </object>
+                      <packing>
+                        <property name="x">11</property>
+                        <property name="y">142</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entryScoringC">
+                        <property name="width_request">160</property>
+                        <property name="height_request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">191</property>
+                        <property name="y">18</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entryTimeC">
+                        <property name="width_request">160</property>
+                        <property name="height_request">28</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">192</property>
+                        <property name="y">54</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entrySpaceC">
+                        <property name="width_request">160</property>
+                        <property name="height_request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">194</property>
+                        <property name="y">89</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label9">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Datos del NWC</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">6</property>
+            <property name="y">13</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFrame" id="frame5">
+            <property name="width_request">635</property>
+            <property name="height_request">259</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="label_xalign">0</property>
+            <property name="shadow_type">none</property>
+            <child>
+              <object class="GtkAlignment" id="alignment5">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="left_padding">12</property>
+                <child>
+                  <object class="GtkFixed" id="fixed6">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolledwindow2">
+                        <property name="width_request">605</property>
+                        <property name="height_request">72</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="x">18</property>
+                        <property name="y">170</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label14">
+                        <property name="width_request">100</property>
+                        <property name="height_request">20</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Scoring</property>
+                      </object>
+                      <packing>
+                        <property name="x">17</property>
+                        <property name="y">25</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label15">
+                        <property name="width_request">100</property>
+                        <property name="height_request">30</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Tiempo</property>
+                      </object>
+                      <packing>
+                        <property name="x">18</property>
+                        <property name="y">56</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label16">
+                        <property name="width_request">119</property>
+                        <property name="height_request">24</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Complejidad Espacial</property>
+                      </object>
+                      <packing>
+                        <property name="x">45</property>
+                        <property name="y">93</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label17">
+                        <property name="width_request">100</property>
+                        <property name="height_request">24</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Alineamiento</property>
+                      </object>
+                      <packing>
+                        <property name="x">14</property>
+                        <property name="y">142</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entryScoringL">
+                        <property name="width_request">160</property>
+                        <property name="height_request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">191</property>
+                        <property name="y">18</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entryTimeL">
+                        <property name="width_request">160</property>
+                        <property name="height_request">28</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">192</property>
+                        <property name="y">54</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entrySpaceL">
+                        <property name="width_request">160</property>
+                        <property name="height_request">27</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                      </object>
+                      <packing>
+                        <property name="x">194</property>
+                        <property name="y">89</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="label">
+              <object class="GtkLabel" id="label18">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Datos del NWL</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">13</property>
+            <property name="y">302</property>
           </packing>
         </child>
       </object>
