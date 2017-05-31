@@ -293,9 +293,10 @@ int checkChars(int i, int j) {
 		struct lNode* pre = BestScorePre(0, vSize, 0, wSize);
 		while (pre->next != NULL) { pre = pre->next; }
 		maxScoringL = pre->value;
+		free(pre);
 
 		joints = malloc(sizeof(int) * (vSize));
-		for (int i = 0; i < (wSize * 2) + 1; i++) {
+		for (int i = 0; i < vSize; i++) {
 			joints[i] = -1;
 		}
 
@@ -323,14 +324,15 @@ int checkChars(int i, int j) {
 				currentIndex++;
 			} else {
 				if (joints[i] > j) {
-					vLt[currentIndex] = '_';
-					wLt[currentIndex] = w[j/2];
-					j += 2;
-					currentIndex++;
 					if(joints[i] % 2 == 0) {
 						vLt[currentIndex] = v[i];
 						wLt[currentIndex] = '_';
 						i++;
+						currentIndex++;
+					} else {
+						vLt[currentIndex] = '_';
+						wLt[currentIndex] = w[j/2];
+						j += 2;
 						currentIndex++;
 					}
 				} else {
@@ -356,7 +358,7 @@ int checkChars(int i, int j) {
 			currentIndex++;
 		}
 
-		printf("newSizeL: %i\n", currentIndex);
+		//printf("newSizeL: %i\n", currentIndex);
 
 		newSizeL = currentIndex;
 		char *vL = malloc(sizeof(char) * currentIndex);
