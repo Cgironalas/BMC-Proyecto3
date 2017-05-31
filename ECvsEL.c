@@ -51,32 +51,29 @@ bool debug =false;
 /**********************************/
 
 void GenerateHileras(){
-  printf("HERE\n");
-  const char * base[4];
-  base[0] = "A";
-  base[1] = "C";
-  base[2] = "G";
-  base[3] = "T";
+  char * base ={"ATCG"};
 
-  v = (char*)calloc(vSize,sizeof(char)); ;
-  w = (char*)calloc(wSize,sizeof(char)); ;
 
+  v = (char *) malloc(sizeof(char)*vSize);
+  w = (char *) malloc(sizeof(char)*wSize);
+
+
+  int position;
   for (int i = 0; i < vSize; i++){
-    int position = rand() % 4;
-    strcat(v, base[position]);
+    position = rand() % 4;
+    v[i] = base[position];
   }
 
   for (int i = 0; i < wSize; i++){
-      int position = rand() % 4;
-      strcat(w, base[position]);
+      position = rand() % 4;
+      w[i] = base[position];
   }
 
   if(!debug){
-    //printV();
-    //printW();
 
-    gtk_entry_set_text(GTK_ENTRY(entryV), v);
-    gtk_entry_set_text(GTK_ENTRY(entryW), w);
+
+ //gtk_entry_set_text(GTK_ENTRY(entryV), v);
+ //gtk_entry_set_text(GTK_ENTRY(entryW), w);
   }
 
 }
@@ -105,6 +102,8 @@ void aceptButton(){
 
 
 int main(int argc, char const *argv[]) {
+  GenerateHileras();
+
   if(debug) {
     vSize = 10;
     wSize = 10;
@@ -183,6 +182,7 @@ int main(int argc, char const *argv[]) {
 
     return 0;
   }
+
 }
 
 void setnwL(){
