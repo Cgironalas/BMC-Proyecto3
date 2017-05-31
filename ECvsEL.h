@@ -13,6 +13,9 @@ struct cNode{
 	struct cNode* up;
 };
 
+bool errorC = false;
+bool errorL = false;
+
 int maxScoringL = 0;
 int maxScoringC = 0;
 
@@ -129,6 +132,10 @@ int checkChars(int i, int j) {
 		int pVal = 0;
 		//Create scoring vectors and auxiliars============
 			struct lNode *lHead = (struct lNode*) malloc(sizeof(struct lNode));
+			if (lHead == NULL) {
+				errorL = true;
+				return NULL;
+			}
 			struct lNode *lCurrent = NULL;
 		//================================================
 		//Initialize scoring vectors======================
@@ -143,6 +150,10 @@ int checkChars(int i, int j) {
 				pVal += gap;
 
 				struct lNode *aux = (struct lNode*) malloc(sizeof(struct lNode));
+				if (aux == NULL) {
+					errorL = true;
+					return NULL;
+				}
 				aux->value = pVal;
 				aux->next = NULL;
 				aux->prev = lCurrent;
@@ -177,6 +188,10 @@ int checkChars(int i, int j) {
 		int pVal = 0;
 		//Create scoring vectors and auxiliars============
 			struct lNode *lHead = (struct lNode*) malloc(sizeof(struct lNode));
+			if(lHead == NULL) {
+				errorL = true;
+				return NULL;
+			}
 			struct lNode *lCurrent = NULL;
 		//================================================
 		//Initialize scoring vectors======================
@@ -191,6 +206,10 @@ int checkChars(int i, int j) {
 				pVal += gap;
 
 				struct lNode *aux = (struct lNode*) malloc(sizeof(struct lNode));
+				if (aux == NULL) {
+					errorL = true;
+					return NULL;
+				}
 				aux->value = pVal;
 				aux->next = NULL;
 				aux->prev = lCurrent;
@@ -237,55 +256,57 @@ int checkChars(int i, int j) {
 			struct lNode* pos = BestScoreSuf(m2, i + 1, n2, n);
 			//printf("POS: ");
 			//printLList(pos);
-			while (pos->next != NULL) { pos = pos->next; }
+			if(!errorC) {
+				while (pos->next != NULL) { pos = pos->next; }
 
-			int curVal;
-			int index = n * 2;
-			int counter = 1;
-			int counterPre = 0;
-			int counterPos = 1;
+				int curVal;
+				int index = n * 2;
+				int counter = 1;
+				int counterPre = 0;
+				int counterPos = 1;
 
-			int maxVal = pre->value + pos->value + gap;
+				int maxVal = pre->value + pos->value + gap;
 
-			pos = pos->prev;
+				pos = pos->prev;
 
-			while (pre != NULL && pos != NULL) {
-				curVal = pre->value + pos->value;
+				while (pre != NULL && pos != NULL) {
+					curVal = pre->value + pos->value;
 
-				if (counterPre == counterPos) {
-					curVal += gap;
-					counterPos++;
-					pos = pos->prev;
-				} else {
-					curVal += checkChars(i, counterPos - 1);
-					counterPre++;
-					pre = pre->next;
+					if (counterPre == counterPos) {
+						curVal += gap;
+						counterPos++;
+						pos = pos->prev;
+					} else {
+						curVal += checkChars(i, counterPos - 1);
+						counterPre++;
+						pre = pre->next;
+					}
+					//printf("CurrVal: %i\n", curVal);
+					//printf("MaxVal: %i\n", maxVal);
+					//printf("bIndex: %i\n\n", index);
+					if (curVal > maxVal) {
+						maxVal = curVal;
+						index = (n * 2) + counter;
+					}
+					//printf("aIndex: %i\n\n", index);
+					counter++;
 				}
-				//printf("CurrVal: %i\n", curVal);
-				//printf("MaxVal: %i\n", maxVal);
-				//printf("bIndex: %i\n\n", index);
-				if (curVal > maxVal) {
-					maxVal = curVal;
-					index = (n * 2) + counter;
+				free(pre);
+				free(pos);
+				joints[i] =  index;
+				//printf("\n\nAlignment Joints: ");
+				//for (int i = 0; i < vSize; i++) {
+				//	printf("%i * ", joints[i]);
+				//}
+				if (m2 - m > 1) {
+					nwLAux(m, i, n, index / 2);
+					if(index%2 == 0) {
+						nwLAux(i + 1, m2, (index / 2), n2);
+					} else {
+						nwLAux(i + 1, m2, (index / 2) + 1, n2);
+					}
+					//nwLAux(i + 1, m2, (index / 2) + 1, n2);
 				}
-				//printf("aIndex: %i\n\n", index);
-				counter++;
-			}
-			free(pre);
-			free(pos);
-			joints[i] =  index;
-			//printf("\n\nAlignment Joints: ");
-			//for (int i = 0; i < vSize; i++) {
-			//	printf("%i * ", joints[i]);
-			//}
-			if (m2 - m > 1) {
-				nwLAux(m, i, n, index / 2);
-				if(index%2 == 0) {
-					nwLAux(i + 1, m2, (index / 2), n2);
-				} else {
-					nwLAux(i + 1, m2, (index / 2) + 1, n2);
-				}
-				//nwLAux(i + 1, m2, (index / 2) + 1, n2);
 			}
 		}
 	}
@@ -297,80 +318,89 @@ int checkChars(int i, int j) {
 		free(pre);
 
 		joints = malloc(sizeof(int) * (vSize));
-		for (int i = 0; i < vSize; i++) {
-			joints[i] = -1;
-		}
+		if (joints == NULL) {
+			errorL = true;
+		} else {
+			for (int i = 0; i < vSize; i++) {
+				joints[i] = -1;
+			}
 
-		nwLAux(0, vSize, 0, wSize);
+			nwLAux(0, vSize, 0, wSize);
 
+			int j = 1;
+			int i = 0;
+			int currentIndex = 0;
+			char *vLt = malloc(sizeof(char) * (vSize + wSize));
+			char *wLt = malloc(sizeof(char) * (vSize + wSize));
 
-
-		int j = 1;
-		int i = 0;
-		int currentIndex = 0;
-		char *vLt = malloc(sizeof(char) * (vSize + wSize));
-		char *wLt = malloc(sizeof(char) * (vSize + wSize));
-
-		while (i < vSize && j < wSize * 2) {
-			//printf("Joint: %i -- j: %i\n", joints[i], j);
-			if (joints[i] == j) {
-				vLt[currentIndex] = v[i];
-				wLt[currentIndex] = w[j/2];
-				i++;
-				j += 2;
-				currentIndex++;
+			if (vLt == NULL || wLt == NULL) {
+				errorL = true;
 			} else {
-				if (joints[i] > j) {
-					if(joints[i] % 2 == 0) {
+				while (i < vSize && j < wSize * 2) {
+					//printf("Joint: %i -- j: %i\n", joints[i], j);
+					if (joints[i] == j) {
 						vLt[currentIndex] = v[i];
-						wLt[currentIndex] = '_';
-						i++;
-						currentIndex++;
-					} else {
-						vLt[currentIndex] = '_';
 						wLt[currentIndex] = w[j/2];
+						i++;
 						j += 2;
 						currentIndex++;
+					} else {
+						if (joints[i] > j) {
+							if(joints[i] % 2 == 0) {
+								vLt[currentIndex] = v[i];
+								wLt[currentIndex] = '_';
+								i++;
+								currentIndex++;
+							} else {
+								vLt[currentIndex] = '_';
+								wLt[currentIndex] = w[j/2];
+								j += 2;
+								currentIndex++;
+							}
+						} else {
+							vLt[currentIndex] = v[i];
+							wLt[currentIndex] = '_';
+							i++;
+							currentIndex++;
+						}
 					}
-				} else {
+				}
+
+				while (i < vSize) {
 					vLt[currentIndex] = v[i];
 					wLt[currentIndex] = '_';
 					i++;
 					currentIndex++;
 				}
+
+				while (j < wSize * 2) {
+					vLt[currentIndex] = '_';
+					wLt[currentIndex] = w[j/2];
+					j += 2;
+					currentIndex++;
+				}
+
+				printf("newSizeL: %i\n", currentIndex);
+
+				newSizeL = currentIndex;
+				vL = malloc(sizeof(char) * newSizeL);
+				wL = malloc(sizeof(char) * newSizeL);
+
+				if (vL == NULL || wL == NULL) {
+					errorL = true;
+				} else {
+					for(int counter = 0; counter < newSizeL; counter++) {
+						vL[counter] = vLt[counter];
+						wL[counter] = wLt[counter];
+					}
+
+					free(vLt);
+					free(wLt);
+					free(joints);
+				}
 			}
 		}
-
-		while (i < vSize) {
-			vLt[currentIndex] = v[i];
-			wLt[currentIndex] = '_';
-			i++;
-			currentIndex++;
-		}
-
-		while (j < wSize * 2) {
-			vLt[currentIndex] = '_';
-			wLt[currentIndex] = w[j/2];
-			j += 2;
-			currentIndex++;
-		}
-
-		printf("newSizeL: %i\n", currentIndex);
-
-		newSizeL = currentIndex;
-		vL = malloc(sizeof(char) * newSizeL);
-		wL = malloc(sizeof(char) * newSizeL);
-
-		for(int counter = 0; counter < newSizeL; counter++) {
-			vL[counter] = vLt[counter];
-			wL[counter] = wLt[counter];
-		}
-
-		free(vLt);
-		free(wLt);
-		free(joints);
-
-
+			
 	}
 //================================================
 
@@ -392,12 +422,17 @@ int checkChars(int i, int j) {
 		int val = gap;
 		for (int j = 0; j < wSize; j++) {
 			struct cNode *aux = (struct cNode*) malloc(sizeof(struct cNode));
-			setValue(aux, current, currentUp, val, arrows);
+			if (aux == NULL) {
+				errorC = true;
+				break;
+			} else {
+				setValue(aux, current, currentUp, val, arrows);
 
-			current->next = aux;
-			current = aux;
-			if(currentUp != NULL) {	currentUp = currentUp->next; }
-			val += gap;
+				current->next = aux;
+				current = aux;
+				if(currentUp != NULL) {	currentUp = currentUp->next; }
+				val += gap;
+			}
 		}
 	}
 
@@ -406,168 +441,190 @@ int checkChars(int i, int j) {
 		bool arrows[3] = {0, 0, 0};
 
 		struct cNode *header = (struct cNode*) malloc(sizeof(struct cNode));
-		setValue(header, NULL, NULL, 0, arrows);
+		if (header == NULL) {
+			errorC = true;
+		} else {
+			setValue(header, NULL, NULL, 0, arrows);
 
-		struct cNode *current = header;
-		struct cNode *currentUp = NULL;
-		struct cNode *currentRow = header;
+			struct cNode *current = header;
+			struct cNode *currentUp = NULL;
+			struct cNode *currentRow = header;
 
-		arrows[2] = true;
+			arrows[2] = true;
 
-		fillRow(current, NULL, arrows);
+			fillRow(current, NULL, arrows);
+			if(!errorC){
+				arrows[2] = false;
 
-		arrows[2] = false;
+				currentUp = NULL;
+				for (int i = 0; i < vSize; i++) {
+					struct cNode *aux = (struct cNode*) malloc(sizeof(struct cNode));
+					if(aux == NULL) {
+						errorC = true;
+						break;
+					}
+					arrows[1] = true;
+					setValue(aux, NULL, currentUp, val, arrows);
+					currentUp = currentRow->next;
+					currentRow->down = aux;
+					currentRow = aux;
+					current = currentRow;
+					val += gap;
+					arrows[1] = false;
+					fillRow(current, currentUp, arrows);
+					if(errorC == true) {
+						break;
+					}
+				}
 
-		currentUp = NULL;
-		for (int i = 0; i < vSize; i++) {
-			struct cNode *aux = (struct cNode*) malloc(sizeof(struct cNode));
-			arrows[1] = true;
-			setValue(aux, NULL, currentUp, val, arrows);
-			currentUp = currentRow->next;
-			currentRow->down = aux;
-			currentRow = aux;
-			current = currentRow;
-			val += gap;
-			arrows[1] = false;
-			fillRow(current, currentUp, arrows);
-		}
+				if(!errorC) {
+					currentRow = header;
 
-		currentRow = header;
+					for (int i = 0; i < vSize; i++) {
+						currentUp = currentRow;
+						currentRow = currentRow->down;
+						current = currentRow;
 
-		for (int i = 0; i < vSize; i++) {
-			currentUp = currentRow;
-			currentRow = currentRow->down;
-			current = currentRow;
+						for (int j = 0; j < wSize; j++) {
+							int v1 = currentUp->value + checkChars(i, j);
+							int v2 = currentUp->next->value + gap;
+							int v3 = current->value + gap;
 
-			for (int j = 0; j < wSize; j++) {
-				int v1 = currentUp->value + checkChars(i, j);
-				int v2 = currentUp->next->value + gap;
-				int v3 = current->value + gap;
+							int maxVal = max3(v1, v2, v3);
 
-				int maxVal = max3(v1, v2, v3);
+							//Diagonal arrow
+							if (maxVal == v1) { arrows[0] = true; }
+							else { arrows[0] = false; }
 
-				//Diagonal arrow
-				if (maxVal == v1) { arrows[0] = true; }
-				else { arrows[0] = false; }
+							//Upwards arrow
+							if (maxVal == v2) { arrows[1] = true; }
+							else { arrows[1] = false; }
 
-				//Upwards arrow
-				if (maxVal == v2) { arrows[1] = true; }
-				else { arrows[1] = false; }
+							//Backwards arrow
+							if (maxVal == v3) { arrows[2] = true; }
+							else { arrows[2] = false; }
 
-				//Backwards arrow
-				if (maxVal == v3) { arrows[2] = true; }
-				else { arrows[2] = false; }
+							current->next->value = maxVal;
+							current->next->arrow[0] = arrows[0];
+							current->next->arrow[1] = arrows[1];
+							current->next->arrow[2] = arrows[2];
 
-				current->next->value = maxVal;
-				current->next->arrow[0] = arrows[0];
-				current->next->arrow[1] = arrows[1];
-				current->next->arrow[2] = arrows[2];
+							current = current->next;
+							currentUp = currentUp->next;
+						}
+					}
+					//printf("\n\nAligned table\n");
+					//printCTable(header);
 
-				current = current->next;
-				currentUp = currentUp->next;
+					currentRow = header;
+					while (currentRow->down != NULL) { currentRow = currentRow->down; }
+
+					current = currentRow;
+					while (current->next != NULL) { current = current->next; }
+
+					maxScoringC = current->value;
+
+					int i = vSize - 1;
+					int j = wSize - 1;
+
+					char *vCt = malloc(sizeof(char) * (vSize + wSize));
+					char *wCt = malloc(sizeof(char) * (vSize + wSize));
+
+					if(vCt == NULL || wCt == NULL) {
+						errorC = true;
+					} else {
+						int currentIndex = vSize + wSize - 1;
+						int counter = 0;
+
+						while (i >= 0 && j >= 0) {
+							//printf("\nCurrent: \n");
+							//printCList(current);
+							//printf("I: %i ** J: %i\n", i, j);
+							if (current->arrow[0] == true) {
+								vCt[currentIndex] = v[i];
+								wCt[currentIndex] = w[j];
+								current = current->up->prev;
+								i--;
+								j--;
+							} else if (current->arrow[1] == true) {
+								vCt[currentIndex] = v[i];
+								wCt[currentIndex] = '_';
+								current = current->up;
+								i--;
+							} else if (current->arrow[2] == true) {
+								vCt[currentIndex] = '_';
+								wCt[currentIndex] = w[j];
+								current = current->prev;
+								j--;
+							}
+							currentIndex--;
+							counter++;
+						}
+
+						while(i >= 0) {
+							vCt[currentIndex] = v[i];
+							wCt[currentIndex] = '_';
+							current = current->up;
+							i--;
+							currentIndex--;
+							counter++;
+						}
+						while(j >= 0) {
+							vCt[currentIndex] = '_';
+							wCt[currentIndex] = w[j];
+							current = current->prev;
+							j--;
+							currentIndex--;
+							counter++;
+						}
+
+						currentRow = header;
+						while (currentRow->down != NULL) { currentRow = currentRow->down; }
+
+						while (currentRow->up != NULL) {
+							current = currentRow;
+							while (current->next != NULL) { current = current->next; }
+							while (current->prev != NULL) {
+								struct cNode *aux = current;
+								current = current->prev;
+								free(aux);
+							}
+							free(current);
+							currentRow = currentRow->up;
+						}
+						current = currentRow;
+						while (current->next != NULL) { current = current->next; }
+						while (current->prev != NULL) {
+							struct cNode *aux = current;
+							current = current->prev;
+							free(aux);
+						}
+						free(header);
+
+						newSize = counter;
+						vC = malloc(sizeof(char) * (newSize));
+						wC = malloc(sizeof(char) * (newSize));
+
+						if (vC == NULL || wC == NULL) {
+							errorC = true;
+						} else {
+							currentIndex++;
+							counter = 0;
+							while(currentIndex < vSize + wSize) {
+								vC[counter] = vCt[currentIndex];
+								wC[counter] = wCt[currentIndex];
+								currentIndex++;
+								counter++;
+							}
+							free(vCt);
+							free(wCt);
+
+							printCAlign();
+							printf("Score: %i\n", maxScoringC);
+						}
+					}
+				}
 			}
 		}
-		//printf("\n\nAligned table\n");
-		//printCTable(header);
-
-		currentRow = header;
-		while (currentRow->down != NULL) { currentRow = currentRow->down; }
-
-		current = currentRow;
-		while (current->next != NULL) { current = current->next; }
-
-		maxScoringC = current->value;
-
-		int i = vSize - 1;
-		int j = wSize - 1;
-
-		char *vCt = malloc(sizeof(char) * (vSize + wSize));
-		char *wCt = malloc(sizeof(char) * (vSize + wSize));
-
-		int currentIndex = vSize + wSize - 1;
-		int counter = 0;
-
-		while (i >= 0 && j >= 0) {
-			//printf("\nCurrent: \n");
-			//printCList(current);
-			//printf("I: %i ** J: %i\n", i, j);
-			if (current->arrow[0] == true) {
-				vCt[currentIndex] = v[i];
-				wCt[currentIndex] = w[j];
-				current = current->up->prev;
-				i--;
-				j--;
-			} else if (current->arrow[1] == true) {
-				vCt[currentIndex] = v[i];
-				wCt[currentIndex] = '_';
-				current = current->up;
-				i--;
-			} else if (current->arrow[2] == true) {
-				vCt[currentIndex] = '_';
-				wCt[currentIndex] = w[j];
-				current = current->prev;
-				j--;
-			}
-			currentIndex--;
-			counter++;
-		}
-
-		while(i >= 0) {
-			vCt[currentIndex] = v[i];
-			wCt[currentIndex] = '_';
-			current = current->up;
-			i--;
-			currentIndex--;
-			counter++;
-		}
-		while(j >= 0) {
-			vCt[currentIndex] = '_';
-			wCt[currentIndex] = w[j];
-			current = current->prev;
-			j--;
-			currentIndex--;
-			counter++;
-		}
-
-		currentRow = header;
-		while (currentRow->down != NULL) { currentRow = currentRow->down; }
-
-		while (currentRow->up != NULL) {
-			current = currentRow;
-			while (current->next != NULL) { current = current->next; }
-			while (current->prev != NULL) {
-				struct cNode *aux = current;
-				current = current->prev;
-				free(aux);
-			}
-			free(current);
-			currentRow = currentRow->up;
-		}
-		current = currentRow;
-		while (current->next != NULL) { current = current->next; }
-		while (current->prev != NULL) {
-			struct cNode *aux = current;
-			current = current->prev;
-			free(aux);
-		}
-		free(header);
-
-		newSize = counter;
-		vC = malloc(sizeof(char) * (newSize));
-		wC = malloc(sizeof(char) * (newSize));
-
-		currentIndex++;
-		counter = 0;
-		while(currentIndex < vSize + wSize) {
-			vC[counter] = vCt[currentIndex];
-			wC[counter] = wCt[currentIndex];
-			currentIndex++;
-			counter++;
-		}
-		free(vCt);
-		free(wCt);
-
-		printCAlign();
-		printf("Score: %i\n", maxScoringC);
 	}
 //================================================
