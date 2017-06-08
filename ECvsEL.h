@@ -134,7 +134,7 @@ int checkChars(int i, int j) {
 	struct lNode* BestScoreSuf(int v1, int v2, int w1, int w2){
 		int pVal = 0;
 		//Create scoring vectors and auxiliars============
-			struct lNode *lHead = (struct lNode*) malloc(sizeof(struct lNode));
+			struct lNode *lHead = malloc(sizeof(struct lNode));
 			if (lHead == NULL) {
 				errorL = true;
 				return NULL;
@@ -152,7 +152,7 @@ int checkChars(int i, int j) {
 			for (int j = w1 - 1; j >= w2; j--) {
 				pVal += gap;
 
-				struct lNode *aux = (struct lNode*) malloc(sizeof(struct lNode));
+				struct lNode *aux = malloc(sizeof(struct lNode));
 				if (aux == NULL) {
 					errorL = true;
 					return NULL;
@@ -190,7 +190,7 @@ int checkChars(int i, int j) {
 	struct lNode* BestScorePre(int v1, int v2, int w1, int w2){
 		int pVal = 0;
 		//Create scoring vectors and auxiliars============
-			struct lNode *lHead = (struct lNode*) malloc(sizeof(struct lNode));
+			struct lNode *lHead = malloc(sizeof(struct lNode));
 			if(lHead == NULL) {
 				errorL = true;
 				return NULL;
@@ -208,7 +208,7 @@ int checkChars(int i, int j) {
 			for (int j = w1; j < w2; j++) {
 				pVal += gap;
 
-				struct lNode *aux = (struct lNode*) malloc(sizeof(struct lNode));
+				struct lNode *aux = malloc(sizeof(struct lNode));
 				if (aux == NULL) {
 					errorL = true;
 					return NULL;
@@ -384,7 +384,7 @@ int checkChars(int i, int j) {
 					currentIndex++;
 				}
 
-				printf("newSizeL: %i\n", currentIndex);
+				//printf("newSizeL: %i\n", currentIndex);
 
 				newSizeL = currentIndex;
 				vL = malloc(sizeof(char) * newSizeL);
@@ -398,7 +398,7 @@ int checkChars(int i, int j) {
 						wL[counter] = wLt[counter];
 					}
 					lSpace = (sizeof(struct lNode) * 3) + (sizeof(int) * (vSize)) + (2 * sizeof(char) * (vSize + wSize)) + (2 * sizeof(char) * newSizeL);
-					printf("Space L: %li\n", lSpace);
+					//printf("Space L: %li\n", lSpace);
 					free(vLt);
 					free(wLt);
 					free(joints);
@@ -426,7 +426,7 @@ int checkChars(int i, int j) {
 	void fillRow(struct cNode *current, struct cNode *currentUp, bool arrows[3]){
 		int val = gap;
 		for (int j = 0; j < wSize; j++) {
-			struct cNode *aux = (struct cNode*) malloc(sizeof(struct cNode));
+			struct cNode *aux = malloc(sizeof(struct cNode));
 			if (aux == NULL) {
 				errorC = true;
 				break;
@@ -445,7 +445,7 @@ int checkChars(int i, int j) {
 		int val = gap;
 		bool arrows[3] = {0, 0, 0};
 
-		struct cNode *header = (struct cNode*) malloc(sizeof(struct cNode));
+		struct cNode *header = malloc(sizeof(struct cNode));
 		if (header == NULL) {
 			errorC = true;
 		} else {
@@ -463,7 +463,7 @@ int checkChars(int i, int j) {
 
 				currentUp = NULL;
 				for (int i = 0; i < vSize; i++) {
-					struct cNode *aux = (struct cNode*) malloc(sizeof(struct cNode));
+					struct cNode *aux = malloc(sizeof(struct cNode));
 					if(aux == NULL) {
 						errorC = true;
 						break;
@@ -625,9 +625,9 @@ int checkChars(int i, int j) {
 							free(wCt);
 
 							cSpace = (2 * sizeof(char) * (newSize)) + (2 * sizeof(char) * (vSize + wSize)) + (sizeof(struct cNode) * (vSize + 1) * (wSize +1));
-							printf("Space C: %li\n", cSpace);
-							printCAlign();
-							printf("Score: %i\n", maxScoringC);
+							//printf("Space C: %li\n", cSpace);
+							//printCAlign();
+							//printf("Score: %i\n", maxScoringC);
 						}
 					}
 				}
